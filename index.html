@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>LocalForage 存储</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/localforage.min.js"></script>
+</head>
+<body>
+<div id="wrapper">
+    <input type="text" id="typeInput" width="300px" placeholder="填写类型">
+    <button type="button" onclick="addType()">添加</button>
+    <table>
+        <thead>
+        <th>序号</th>
+        <th>类型</th>
+        <th>点击数</th>
+        <th>操作</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>派送</td>
+            <td>12</td>
+            <td>
+                <button>点击</button>
+                <button>删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    function addType(){
+        var typeInput = document.getElementById("typeInput").value;
+        console.log(typeInput);
+    }
+
+    window.onload = function () {
+        read("types", (value) => {
+            console.log(value);
+        });
+
+        add("types",[1,2,3,4,5],(value)=>{
+            console.log(value);
+        });
+
+        remove("types", () => {
+            console.log('删除');
+        });
+
+        clear(()=>{
+            console.log("清空");
+        })
+    }
+
+
+    //初始化驱动
+    const store = localforage.createInstance({
+        name: "MyDbName", //数据库名称
+        storeName: 'sn', //数据仓库名称  不同账号对应不同的库
+        driver: [
+            localforage.WEBSQL,
+            localforage.INDEXEDDB,
+            localforage.LOCALSTORAGE
+        ],  //驱动优先级
+        description: 'LocalForage Desc' //描述
+    });
+
+    //读取
+    function read(key, callback) {
+        store.getItem(key, function (err, value) {
+            callback(value);
+        });
+    }
+
+    //设置
+    function add(key, value, callback) {
+        store.setItem(key, value).then(function (value) {
+            callback(value);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
+
+    //删除Key
+    function remove(key, callback) {
+        store.removeItem(key).then(function () {
+            callback();
+        }).catch(function (err) {
+            console.log(err);
+        })
+    }
+
+    //清空数据库
+    function clear(callback) {
+        localforage.clear().then(function () {
+            callback();
+        }).catch(function (err) {
+            console.log(err);
+        })
+    }
+
+
+</script>

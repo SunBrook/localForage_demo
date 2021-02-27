@@ -1,0 +1,21 @@
+#wrapper{
+    width:800px;
+    min-height: 800px;
+    margin: 50px auto;
+}
+
+#wrapper table{
+    margin-top: 10px;
+    width:100%;
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+}
+
+#wrapper table th,
+#wrapper table td {
+    border: 1px solid #cccccc;
+    text-align: center;
+    padding: 10px 0;
+
+}
+
